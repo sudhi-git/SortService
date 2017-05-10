@@ -31,10 +31,10 @@ public class SortMetaData extends EdmProvider{
 	  private static final String NAMESPACE = "com.sudhi.learning";
 	  private static final FullQualifiedName ENTITY_TYPE_1_1 = new FullQualifiedName(NAMESPACE, ENTITY_NAME_SORTID);
 	  private static final FullQualifiedName ENTITY_TYPE_1_2 = new FullQualifiedName(NAMESPACE, ENTITY_NAME_NUMBER);
-	  private static final FullQualifiedName ASSOCIATION_SORT_NUMBERS = new FullQualifiedName(NAMESPACE, "Sort_To_Numbers");
+	  private static final FullQualifiedName ASSOCIATION_SORT_NUMBERS = new FullQualifiedName(NAMESPACE, "Sort_Numbers_Number_Sort");
 	  private static final String ENTITY_CONTAINER = "SortNumbersEntityContainer";
-	  private static final String ROLE_1_2 = "Sort_to_Numbers";
-	  private static final String ROLE_1_1 = "Number_to_Sort";
+	  private static final String ROLE_1_1 = "Sort_to_Numbers";
+	  private static final String ROLE_1_2 = "Number_to_Sort";
 	  private static final String ASSOCIATION_SET = "Sort_Numbers";
 
 	  public List<Schema> getSchemas() throws ODataException {
@@ -90,24 +90,32 @@ public class SortMetaData extends EdmProvider{
 			    //Navigation Properties
 			    List<NavigationProperty> navigationProperties = new ArrayList<NavigationProperty>();
 			    navigationProperties.add(new NavigationProperty().setName("Numbers")
-			        .setRelationship(ASSOCIATION_SORT_NUMBERS).setFromRole(ROLE_1_2).setToRole(ROLE_1_1));
+			        .setRelationship(ASSOCIATION_SORT_NUMBERS).setFromRole(ROLE_1_1).setToRole(ROLE_1_2));
 			    
 			    return new EntityType().setName(ENTITY_TYPE_1_1.getName())
 			        .setProperties(properties)
 			        .setNavigationProperties(navigationProperties)
 			        .setKey(key);
+			    
 			  } else if(ENTITY_TYPE_1_2.getName().equals(edmFQName.getName())){
 			    //Properties
 			    List<Property> properties = new ArrayList<Property>();
 			    properties.add(new SimpleProperty().setName("NumberId").setType(EdmSimpleTypeKind.Int16));
+			    properties.add(new SimpleProperty().setName("SortId").setType(EdmSimpleTypeKind.String));
 	
 			    //Key
 			    List<PropertyRef> keyProperties = new ArrayList<PropertyRef>();
 			    keyProperties.add(new PropertyRef().setName("NumberId"));
 			    Key key = new Key().setKeys(keyProperties);
+
+			    //Navigation Properties
+			    List<NavigationProperty> navigationProperties = new ArrayList<NavigationProperty>();
+			    navigationProperties.add(new NavigationProperty().setName("Numbers")
+			        .setRelationship(ASSOCIATION_SORT_NUMBERS).setFromRole(ROLE_1_2).setToRole(ROLE_1_1));
 			    
 			    return new EntityType().setName(ENTITY_TYPE_1_2.getName())
 			        .setProperties(properties)
+			        .setNavigationProperties(navigationProperties)
 			        .setKey(key);		  
 			  }
 		  }
@@ -130,8 +138,8 @@ public class SortMetaData extends EdmProvider{
 		  if (NAMESPACE.equals(edmFQName.getNamespace())) {
 		    if (ASSOCIATION_SORT_NUMBERS.getName().equals(edmFQName.getName())) {
 		      return new Association().setName(ASSOCIATION_SORT_NUMBERS.getName())
-		          .setEnd1(new AssociationEnd().setType(ENTITY_TYPE_1_1).setRole(ROLE_1_1).setMultiplicity(EdmMultiplicity.MANY))
-		          .setEnd2(new AssociationEnd().setType(ENTITY_TYPE_1_2).setRole(ROLE_1_2).setMultiplicity(EdmMultiplicity.ONE));
+		          .setEnd1(new AssociationEnd().setType(ENTITY_TYPE_1_1).setRole(ROLE_1_1).setMultiplicity(EdmMultiplicity.ONE))
+		          .setEnd2(new AssociationEnd().setType(ENTITY_TYPE_1_2).setRole(ROLE_1_2).setMultiplicity(EdmMultiplicity.MANY));
 		    }
 		  }
 		  return null;
