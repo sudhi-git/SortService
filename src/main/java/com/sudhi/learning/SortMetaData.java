@@ -15,7 +15,10 @@ import org.apache.olingo.odata2.api.edm.provider.EntityContainer;
 import org.apache.olingo.odata2.api.edm.provider.EntityContainerInfo;
 import org.apache.olingo.odata2.api.edm.provider.EntitySet;
 import org.apache.olingo.odata2.api.edm.provider.EntityType;
+import org.apache.olingo.odata2.api.edm.provider.FunctionImport;
+import org.apache.olingo.odata2.api.edm.provider.FunctionImportParameter;
 import org.apache.olingo.odata2.api.edm.provider.Key;
+import org.apache.olingo.odata2.api.edm.provider.Mapping;
 import org.apache.olingo.odata2.api.edm.provider.NavigationProperty;
 import org.apache.olingo.odata2.api.edm.provider.Property;
 import org.apache.olingo.odata2.api.edm.provider.PropertyRef;
@@ -42,6 +45,16 @@ public class SortMetaData extends EdmProvider{
 
 		  Schema schema = new Schema();
 		  schema.setNamespace(NAMESPACE);
+		  
+		  List<FunctionImport> fiList = new ArrayList<>();
+		  FunctionImport fi = new FunctionImport();
+		  List<FunctionImportParameter> fipList= new ArrayList<>();
+		  FunctionImportParameter fip = new FunctionImportParameter();
+		  Mapping mapping = new Mapping();
+		  fip.setName("SortID").setType(EdmSimpleTypeKind.String);
+		  fipList.add(fip);
+		  fi.setName("SelectionSort").setParameters(fipList);
+		  
 
 		  List<EntityType> entityTypes = new ArrayList<EntityType>();
 		  entityTypes.add(getEntityType(ENTITY_TYPE_1_1));
@@ -56,6 +69,8 @@ public class SortMetaData extends EdmProvider{
 		  entitySets.add(getEntitySet(ENTITY_CONTAINER, ENTITY_SET_NAME_SORTIDS));
 		  entitySets.add(getEntitySet(ENTITY_CONTAINER, ENTITY_SET_NAME_NUMBERS));
 		  entityContainer.setEntitySets(entitySets);
+		  
+		  entityContainer.setFunctionImports(fiList);
 
 		  List<Association> associations = new ArrayList<Association>();
 		  associations.add(getAssociation(ASSOCIATION_SORT_NUMBERS));
@@ -110,7 +125,7 @@ public class SortMetaData extends EdmProvider{
 
 			    //Navigation Properties
 			    List<NavigationProperty> navigationProperties = new ArrayList<NavigationProperty>();
-			    navigationProperties.add(new NavigationProperty().setName("Numbers")
+			    navigationProperties.add(new NavigationProperty().setName("SortIDs")
 			        .setRelationship(ASSOCIATION_SORT_NUMBERS).setFromRole(ROLE_1_2).setToRole(ROLE_1_1));
 			    
 			    return new EntityType().setName(ENTITY_TYPE_1_2.getName())

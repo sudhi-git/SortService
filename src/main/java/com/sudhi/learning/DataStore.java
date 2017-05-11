@@ -47,4 +47,16 @@ public class DataStore {
 		}
 		return numberListForSortId;
 	}
+	public static List<Map<String, Object>> getSortIDForNumber(int number){
+		List<Map<String, Object>> sortIdforNumber = new ArrayList<>();
+		Map<String, Object> sort = new HashMap<>();
+		for(Map<String, Object> number1 : numberList){
+			if(number1.get("NumberId").equals(number)){
+				sort.put("SortId", number1.get("SortId"));
+				sortIdforNumber.add(sort);
+			}
+		}
+		return sortIdforNumber;
+	}
 }
+
